@@ -1,0 +1,71 @@
+[
+  {
+    "model": "lms.course",
+    "pk": 1,
+    "fields": {
+      "title": "Курс Python-develop",
+      "description": "Курс для Python разработчиков",
+      "preview": ""
+    }
+  },
+  {
+    "model": "lms.course",
+    "pk": 2,
+    "fields": {
+      "title": "Курс Java-develop",
+      "description": "Курс для Java разработчиков",
+      "preview": ""
+    }
+  },
+  {
+    "model": "lms.course",
+    "pk": 3,
+    "fields": {
+      "title": "Курс Go-develop",
+      "description": "Курс для Go разработчиков",
+      "preview": ""
+    }
+  },
+  {
+    "model": "lms.course",
+    "pk": 4,
+    "fields": {
+      "title": "Курс для фронтенд разработчиков",
+      "description": "Курс CSS и JavaScript",
+      "preview": ""
+    }
+  },
+  {
+    "model": "lms.lesson",
+    "pk": 1,
+    "fields": {
+      "title": "Основы разработки Python",
+      "description": "Основы языка Python",
+      "preview": "",
+      "link_video": null,
+      "course": 1
+    }
+  },
+  {
+    "model": "lms.lesson",
+    "pk": 3,
+    "fields": {
+      "title": "Python практика",
+      "description": "Домашнее задание",
+      "preview": "",
+      "link_video": null,
+      "course": 1
+    }
+  },
+  {
+    "model": "lms.lesson",
+    "pk": 4,
+    "fields": {
+      "title": "Java практика",
+      "description": "Домашнее задание",
+      "preview": "",
+      "link_video": null,
+      "course": 2
+    }
+  }
+]
