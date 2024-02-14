@@ -13,6 +13,7 @@ djangorestframework = "^3.14.0"
 python-dotenv = "^1.0.1"
 pillow = "^10.2.0"
 django-filter = "^23.5"
+ipython = "^8.21.0"
 
 
 [build-system]
