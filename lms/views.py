@@ -1,15 +1,20 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from lms.models import Course, Lesson
+from lms.models import Course, Lesson, Subscribe
+from lms.paginators import LmsPaginator
 from lms.permissions import IsModerator, IsOwner
-from lms.serializes import CourseSerialize, LessonSerialize
+from lms.serializes import CourseSerialize, LessonSerialize, SubscribeSerialize
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerialize
     queryset = Course.objects.all()
+    pagination_class = LmsPaginator
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -20,7 +25,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action == 'list':
             self.permission_classes = [IsAuthenticated]
         elif self.action == 'retrieve':
-            self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
+            self.permission_classes = [IsAuthenticated]
         elif self.action == 'update':
             self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
         elif self.action == 'partial_update':
@@ -42,6 +47,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerialize
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = LmsPaginator
 
 
 class LessonDetailAPIView(generics.RetrieveAPIView):
@@ -59,3 +65,30 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
+
+
+class SubscribeView(APIView):
+    serializer_class = CourseSerialize
+    queryset = Subscribe.objects.all()
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get('course')
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscribe.objects.filter(user=user, course=course_item).first()
+
+        if subs_item:
+            # Если подписка уже есть, отменяем её
+            subs_item.delete()
+            message = 'подписка удалена'
+        else:
+            # Если подписки нет, создаем новую
+            Subscribe.objects.create(user=user, course=course_item)
+            message = 'подписка добавлена'
+
+        return Response({"message": message})
+
+
+class SubscribeListAPIView(generics.ListAPIView):
+    serializer_class = SubscribeSerialize
+    queryset = Subscribe.objects.all()

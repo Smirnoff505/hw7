@@ -16,14 +16,14 @@ urlpatterns = [
     # user
     path('user/register/', UserCreateAPIView.as_view(), name='user-register'),
     path('user/', UserListAPIView.as_view(), name='user-list'),
-    path('user/update/<int:pk>/', UserUpdateAPIView.as_view(), name='user-update'),
-    path('user/detail/<int:pk>/', UserDetailAPIView.as_view(), name='user-detail'),
-    path('user/delete/<int:pk>/', UserDeleteAPIView.as_view(), name='user-delete'),
+    path('user/<int:pk>/update/', UserUpdateAPIView.as_view(), name='user-update'),
+    path('user/<int:pk>/detail/', UserDetailAPIView.as_view(), name='user-detail'),
+    path('user/<int:pk>/delete/', UserDeleteAPIView.as_view(), name='user-delete'),
 
     # payment
     path('payment/', PaymentListAPIView.as_view(), name='payment-list'),
     path('payment/create/', PaymentCreateAPIView.as_view(), name='payment-create'),
-    path('payment/detail/<int:pk>/', PaymentDetailAPIView.as_view(), name='payment-detail'),
-    path('payment/update/<int:pk>/', PaymentUpdateAPIView.as_view(), name='payment-update'),
-    path('payment/delete/<int:pk>/', PaymentDeleteAPIView.as_view(), name='payment-delete'),
+    path('payment/<int:pk>/detail/', PaymentDetailAPIView.as_view(), name='payment-detail'),
+    path('payment/<int:pk>/update/', PaymentUpdateAPIView.as_view(), name='payment-update'),
+    path('payment/<int:pk>/delete/', PaymentDeleteAPIView.as_view(), name='payment-delete'),
 ]
