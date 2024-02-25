@@ -40,6 +40,7 @@ class Subscribe(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,
                               verbose_name='владелец')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True, related_name='курс')
+    subscription_activity = models.BooleanField(default=False, verbose_name='активность подписки')
 
     def __str__(self):
         return f'{self.owner}'

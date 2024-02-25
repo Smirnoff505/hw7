@@ -14,11 +14,11 @@ class LessonSerialize(serializers.ModelSerializer):
 class SubscribeSerialize(serializers.ModelSerializer):
     class Meta:
         model = Subscribe
-        fields = ('course', 'owner',)
+        fields = '__all__'
 
 
 class CourseSerialize(serializers.ModelSerializer):
-    subscribe = SubscribeSerialize(source='course', read_only=True)
+    subscribe = serializers.SerializerMethodField()
     lesson_count = serializers.SerializerMethodField()
     lessons = LessonSerialize(source='course', many=True, read_only=True)
 
@@ -30,3 +30,10 @@ class CourseSerialize(serializers.ModelSerializer):
         if obj.course.all().count():
             return obj.course.all().count()
         return 0
+
+    def get_subscribe(self, obj):
+        subscribe = Subscribe.objects.filter(course=obj.pk, owner=self.context.get('request').user.pk)
+        if subscribe.exists():
+            return True
+        else:
+            return False

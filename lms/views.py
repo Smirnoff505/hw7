@@ -73,9 +73,9 @@ class SubscribeView(APIView):
 
     def post(self, *args, **kwargs):
         user = self.request.user
-        course_id = self.request.data.get('course')
+        course_id = kwargs.get('pk')
         course_item = get_object_or_404(Course, pk=course_id)
-        subs_item = Subscribe.objects.filter(user=user, course=course_item).first()
+        subs_item = Subscribe.objects.filter(owner=user, course=course_item).first()
 
         if subs_item:
             # Если подписка уже есть, отменяем её
@@ -83,7 +83,7 @@ class SubscribeView(APIView):
             message = 'подписка удалена'
         else:
             # Если подписки нет, создаем новую
-            Subscribe.objects.create(user=user, course=course_item)
+            Subscribe.objects.create(owner=user, course=course_item, subscription_activity=True)
             message = 'подписка добавлена'
 
         return Response({"message": message})
