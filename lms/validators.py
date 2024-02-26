@@ -10,6 +10,8 @@ class LinkVideoValidator:
     def __call__(self, value):
         reg = re.compile('youtube\.com')
         tmp_val = dict(value).get(self.field)
-        if not bool(reg.match(tmp_val)):
-            raise ValidationError('Ссылки допустимы только с youtube.com')
+        if tmp_val:
+            if not bool(reg.match(tmp_val)):
+                raise ValidationError('Ссылки допустимы только с youtube.com')
+        return
 
