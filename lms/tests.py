@@ -23,7 +23,7 @@ class LessonTestCase(APITestCase):
         )
 
         self.lesson = Lesson.objects.create(
-            id=1,
+            id=10,
             title='test',
             course=self.course,
             owner=self.user
@@ -51,7 +51,7 @@ class LessonTestCase(APITestCase):
                 "previous": None,
                 "results": [
                     {
-                        "id": 1,
+                        "id": 10,
                         "title": "test",
                         "description": None,
                         "preview": None,
@@ -67,7 +67,7 @@ class LessonTestCase(APITestCase):
         """Тест для просмотра урока"""
 
         response = self.client.get(
-            reverse('lms:lesson-detail', kwargs={'pk': 1}),
+            reverse('lms:lesson-detail', kwargs={'pk': 10}),
         )
 
         self.assertEqual(
@@ -78,7 +78,7 @@ class LessonTestCase(APITestCase):
         self.assertEqual(
             response.json(),
             {
-                "id": 1,
+                "id": 10,
                 "title": "test",
                 "description": None,
                 "preview": None,
@@ -88,28 +88,29 @@ class LessonTestCase(APITestCase):
             }
         )
 
-    # def test_lesson_update(self):
-    #     """Тест для обновления урока"""
-    #
-    #     data = {
-    #         'description': 'test'
-    #     }
-    #
-    #     response = self.client.patch(
-    #         reverse('lms:lesson-update', kwargs={'pk': 1}),
-    #         data=data
-    #     )
-    #
-    #     self.assertEqual(
-    #         response.status_code,
-    #         status.HTTP_200_OK
-    #     )
+    def test_lesson_update(self):
+        """Тест для обновления урока"""
+
+        data = {
+            'description': 'test',
+        }
+
+        response = self.client.patch(
+            reverse('lms:lesson-update', kwargs={'pk': 10}),
+            data=data
+        )
+        print(response.status_code)
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
 
     def test_lesson_delete(self):
         """Тест удаления урока"""
 
         response = self.client.delete(
-            reverse('lms:lesson-delete', kwargs={'pk': 1})
+            reverse('lms:lesson-delete', kwargs={'pk': 10})
         )
 
         self.assertEqual(
@@ -117,37 +118,37 @@ class LessonTestCase(APITestCase):
             status.HTTP_204_NO_CONTENT
         )
 
-    # def test_lesson_create(self):
-    #     """Тест для создания урока"""
-    #
-    #     data = {
-    #         'title': 'test create',
-    #         'description': 'test create',
-    #         'course': self.course.id,
-    #         'owner': self.user.id
-    #     }
-    #     response = self.client.post(
-    #         reverse('lms:lesson-create'),
-    #         data=data,
-    #     )
-    #
-    #     self.assertEqual(
-    #         response.status_code,
-    #         status.HTTP_201_CREATED
-    #     )
-    #
-    # self.assertEqual(
-    #     response.json(),
-    #     {
-    #         "id": 2,
-    #         "title": "test create",
-    #         "description": "test create",
-    #         "preview": None,
-    #         "link_video": None,
-    #         "course": self.course.id,
-    #         "owner": self.user.id,
-    #     }
-    # )
+    def test_lesson_create(self):
+        """Тест для создания урока"""
+
+        data = {
+            'title': 'test create',
+            'description': 'test create',
+            'course': self.course.id,
+            'owner': self.user.id
+        }
+        response = self.client.post(
+            reverse('lms:lesson-create'),
+            data=data,
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+
+        self.assertEqual(
+            response.json(),
+            {
+                "id": 1,
+                "title": "test create",
+                "description": "test create",
+                "preview": None,
+                "link_video": None,
+                "course": self.course.id,
+                "owner": self.user.id,
+            }
+        )
 
     def tearDown(self):
         pass
