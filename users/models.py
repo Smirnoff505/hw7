@@ -31,8 +31,10 @@ class Payment(models.Model):
                                     related_name='paid_lesson', blank=True, null=True)
 
     date_of_payment = models.DateField(auto_now_add=True, verbose_name='дата платежа')
-    payment_amount = models.FloatField(verbose_name='сумма')
+    # payment_amount = models.FloatField(verbose_name='сумма')
     payment_method = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name='метод оплаты')
+    payment_link = models.URLField(max_length=500, verbose_name='ссылка на оплату', blank=True, null=True)
+    payment_id = models.CharField(max_length=300, verbose_name='id сессии оплаты', blank=True, null=True)
 
     def __str__(self):
         return f'{self.owner}'

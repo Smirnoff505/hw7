@@ -7,6 +7,7 @@ class Course(models.Model):
     title = models.CharField(max_length=250, verbose_name='название')
     description = models.TextField(blank=True, null=True, verbose_name='описание')
     preview = models.ImageField(upload_to='course/', blank=True, null=True, verbose_name='превью')
+    price = models.IntegerField(default=1000, verbose_name='Стоимость курса')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
 

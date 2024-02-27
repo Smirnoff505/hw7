@@ -9,6 +9,12 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PaymentCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        exclude = ('paid_lesson',)
+
+
 class UserSerializer(serializers.ModelSerializer):
     payments_list = PaymentSerializer(source='owner', many=True, read_only=True)
 
