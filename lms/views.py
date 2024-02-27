@@ -1,5 +1,8 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, generics
+from drf_yasg import openapi
+from drf_yasg.openapi import Schema, TYPE_OBJECT
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets, generics, status
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -71,6 +74,18 @@ class SubscribeView(APIView):
     serializer_class = CourseSerialize
     queryset = Subscribe.objects.all()
 
+    @swagger_auto_schema(
+        responses={
+            200: openapi.Response(
+                description="подписка добавлена или подписка удалена",
+                examples={
+                    "application/json": {
+                        "message": "подписка добавлена",
+                    }
+                }
+            )
+        }
+    )
     def post(self, *args, **kwargs):
         user = self.request.user
         course_id = kwargs.get('pk')

@@ -37,9 +37,9 @@ class Command(BaseCommand):
             User.objects.create(**user)
 
         payment_list = [
-            {"payment_amount": 500.0, "payment_method": 1, "owner_id": 1, "paid_course_id": 1},
-            {"payment_amount": 1500.0, "payment_method": 2, "owner_id": 2, "paid_course_id": 2},
-            {"payment_amount": 500.0, "payment_method": 1, "owner_id": 3, "paid_lesson_id": 1}
+            {"payment_method": 1, "owner_id": 1, "paid_course_id": 1},
+            {"payment_method": 2, "owner_id": 2, "paid_course_id": 2},
+            {"payment_method": 1, "owner_id": 3, "paid_lesson_id": 1}
         ]
 
         for payment in payment_list:
