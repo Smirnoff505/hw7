@@ -4,7 +4,7 @@ from drf_yasg.openapi import Schema, TYPE_OBJECT
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, generics, status
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -12,6 +12,7 @@ from lms.models import Course, Lesson, Subscribe
 from lms.paginators import LmsPaginator
 from lms.permissions import IsModerator, IsOwner
 from lms.serializes import CourseSerialize, LessonSerialize, SubscribeSerialize
+from lms.tasks import send_message_about_changes
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -21,6 +22,11 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        course_id = self.kwargs.get('pk')  # Извлечение идентификатора курса из URL
+        update_course = serializer.save(course_id=course_id)
+        send_message_about_changes.delay(update_course.id)  # Передача идентификатора объекта
 
     def get_permissions(self):
         if self.action == 'create':
@@ -32,7 +38,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action == 'update':
             self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
         elif self.action == 'partial_update':
-            self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
+            self.permission_classes = [IsAuthenticated]
         elif self.action == 'destroy':
             self.permission_classes = [IsAuthenticated, IsOwner]
         return [permission() for permission in self.permission_classes]
