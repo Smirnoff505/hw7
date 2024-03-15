@@ -85,14 +85,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.getenv('POSTGRES_DB'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': int(os.getenv('POSTGRES_PASSWORD')),
+#         'HOST': os.getenv('POSTGRES_HOST'),
+#         'PORT': int(os.getenv('POSTGRES_PORT'))
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'learn',
+        'NAME': 'learndocker',
         'USER': 'postgres',
-        'PASSWORD': int(os.getenv('DB_PASSWORD')),
-        'HOST': '127.0.0.1',
-        'PORT': 5432
+        'PASSWORD': 555777999,
+        'HOST': 'db'
     }
 }
 
